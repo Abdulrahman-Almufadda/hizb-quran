@@ -1,25 +1,62 @@
 {
   "expo": {
-    "name": "Quran-Project",
-    "slug": "Quran-Project",
+    "name": "حزب",
+    "slug": "hizb-quran",
+    "description": "اقرأ القرآن الكريم كاملاً بخط المصحف الشريف مع الاستماع والبحث والعلامات المرجعية",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "scheme": "hizb",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#FAF6ED",
+    "primaryColor": "#0E5D52",
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.hizbapp.quran",
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
+      }
     },
     "android": {
+      "package": "com.hizbapp.quran",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#0E5D52",
+        "foregroundImage": "./assets/android-icon-foreground.png"
       },
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "enableBackgroundPlayback": true
+        }
+      ],
+      "expo-asset",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "backgroundColor": "#FAF6ED",
+          "dark": {
+            "backgroundColor": "#121917"
+          }
+        }
+      ]
+    ]
   }
 }
