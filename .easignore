@@ -1,0 +1,50 @@
+# Mirrors .gitignore for the EAS Build upload, EXCEPT the Mushaf page assets
+# (assets/mushaf/ and src/assets/mushafManifest.ts) - those are gitignored
+# because they're too large for git, but the production build needs them
+# present on disk, so they must NOT be excluded here.
+# An .easignore file replaces .gitignore for EAS Build archiving, so every
+# exclusion needed still has to be listed explicitly.
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# IDE
+.idea/
+.vscode/
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# generated native folders
+/ios
+/android

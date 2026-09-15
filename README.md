@@ -49,7 +49,7 @@ npm install
 
 The 604 Mushaf page SVGs (~400MB) are **not** committed to this repo - they're
 copied from the sibling Flutter prototype this app was ported from. If you have
-`../Quran Project/mushaf-pages-cleaned` next to this repo on the same machine:
+`../Quran-Project/mushaf-pages-cleaned` next to this repo on the same machine:
 
 ```bash
 npm run copy:mushaf-assets        # copies the 604 SVGs into assets/mushaf/

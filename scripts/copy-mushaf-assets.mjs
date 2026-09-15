@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const projectRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const sourceDir = path.join(projectRoot, '..', 'Quran Project', 'mushaf-pages-cleaned');
+const sourceDir = path.join(projectRoot, '..', 'Quran-Project', 'mushaf-pages-cleaned');
 const destDir = path.join(projectRoot, 'assets', 'mushaf');
 
 if (!fs.existsSync(sourceDir)) {
