@@ -48,3 +48,7 @@ yarn-error.*
 # from the sibling "Quran Project" Flutter repo - not checked into git.
 /assets/mushaf/
 src/assets/mushafManifest.ts
+
+# Downloaded EAS build artifacts (.aab/.apk) - not checked into git
+store-assets/*.aab
+store-assets/*.apk

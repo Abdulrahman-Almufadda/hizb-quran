@@ -20,7 +20,7 @@
       }
     },
     "android": {
-      "package": "com.hizbapp.quran",
+      "package": "sa.almufadda.quran",
       "adaptiveIcon": {
         "backgroundColor": "#0E5D52",
         "foregroundImage": "./assets/android-icon-foreground.png"
