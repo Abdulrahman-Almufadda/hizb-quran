@@ -48,3 +48,9 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Android signing keystore + passwords - never uploaded as part of the
+# general project archive. EAS reads this locally via credentialsSource:
+# "local" in eas.json and transmits it through a separate secure channel.
+/credentials/
+credentials.json

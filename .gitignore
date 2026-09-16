@@ -52,3 +52,7 @@ src/assets/mushafManifest.ts
 # Downloaded EAS build artifacts (.aab/.apk) - not checked into git
 store-assets/*.aab
 store-assets/*.apk
+
+# Android signing keystore + passwords - NEVER commit (repo is public)
+/credentials/
+credentials.json
