@@ -54,3 +54,7 @@ yarn-error.*
 # "local" in eas.json and transmits it through a separate secure channel.
 /credentials/
 credentials.json
+
+# Downloaded EAS build artifacts - not needed for building
+store-assets/*.aab
+store-assets/*.apk
