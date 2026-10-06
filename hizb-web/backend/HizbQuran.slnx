@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/HizbQuran.Api/HizbQuran.Api.csproj" />
+  <Project Path="tests/HizbQuran.Api.Tests/HizbQuran.Api.Tests.csproj" />
+</Solution>
