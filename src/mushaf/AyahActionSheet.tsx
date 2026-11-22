@@ -20,6 +20,9 @@ type Props = {
   onShare: () => void;
   onPlayAyah: () => void;
   onPlaySurahFromHere: () => void;
+  reciterName: string;
+  onChangeReciter: () => void;
+  onShowTafsir: () => void;
 };
 
 type RowProps = { icon: IconName; label: string; palette: Palette; onPress: () => void };
@@ -46,6 +49,9 @@ export function AyahActionSheet({
   onShare,
   onPlayAyah,
   onPlaySurahFromHere,
+  reciterName,
+  onChangeReciter,
+  onShowTafsir,
 }: Props): React.JSX.Element {
   return (
     <Modal visible={ayah != null} transparent animationType="slide" onRequestClose={onClose}>
@@ -58,8 +64,10 @@ export function AyahActionSheet({
             </Text>
           ) : null}
 
+          <Row icon="book-outline" label="تفسير الآية" palette={palette} onPress={onShowTafsir} />
           <Row icon="play-circle-outline" label="تشغيل الآية" palette={palette} onPress={onPlayAyah} />
           <Row icon="albums-outline" label="تشغيل السورة من هنا" palette={palette} onPress={onPlaySurahFromHere} />
+          <Row icon="mic-outline" label={`القارئ: ${reciterName}`} palette={palette} onPress={onChangeReciter} />
           <Row
             icon={isBookmarked ? 'bookmark' : 'bookmark-outline'}
             label={isBookmarked ? 'إزالة العلامة المرجعية' : 'إضافة علامة مرجعية'}

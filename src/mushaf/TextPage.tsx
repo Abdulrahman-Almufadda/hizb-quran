@@ -2,7 +2,9 @@ import * as Clipboard from 'expo-clipboard';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Share, StyleSheet, Text, View } from 'react-native';
 
+import { getReciterById } from '../audio/reciters';
 import { AyahLine } from '../components/AyahLine';
+import { ReciterPickerModal } from '../components/ReciterPickerModal';
 import { isBookmarked as checkIsBookmarked, toggleBookmark } from '../db/bookmarksRepository';
 import { getAyahsByPage, getAyahsBySurah, getSurahs } from '../db/quranRepository';
 import type { Ayah, Surah } from '../db/types';
@@ -11,6 +13,7 @@ import { useAudioStore } from '../state/audioStore';
 import type { Palette } from '../theme/colors';
 import { fonts } from '../theme/typography';
 import { AyahActionSheet } from './AyahActionSheet';
+import { TafsirModal } from './TafsirModal';
 
 type Props = {
   pageNumber: number;
@@ -21,6 +24,10 @@ export function TextPage({ pageNumber, palette }: Props): React.JSX.Element {
   const db = useQuranDb();
   const playAyah = useAudioStore((s) => s.playAyah);
   const playQueue = useAudioStore((s) => s.playQueue);
+  const reciterId = useAudioStore((s) => s.reciterId);
+  const setReciter = useAudioStore((s) => s.setReciter);
+  const [pickingReciter, setPickingReciter] = useState(false);
+  const [tafsirAyah, setTafsirAyah] = useState<Ayah | null>(null);
   const [loaded, setLoaded] = useState<{ page: number; ayahs: Ayah[] } | null>(null);
   const [surahs, setSurahs] = useState<Surah[]>([]);
   const [selectedAyah, setSelectedAyah] = useState<Ayah | null>(null);
@@ -162,6 +169,25 @@ export function TextPage({ pageNumber, palette }: Props): React.JSX.Element {
         onShare={handleShare}
         onPlayAyah={handlePlayAyah}
         onPlaySurahFromHere={handlePlaySurahFromHere}
+        reciterName={getReciterById(reciterId).nameAr}
+        onChangeReciter={() => setPickingReciter(true)}
+        onShowTafsir={() => {
+          setTafsirAyah(selectedAyah);
+          closeActionSheet();
+        }}
+      />
+      <TafsirModal
+        ayah={tafsirAyah}
+        surahName={tafsirAyah ? surahs.find((s) => s.id === tafsirAyah.surahId)?.nameAr ?? null : null}
+        palette={palette}
+        onClose={() => setTafsirAyah(null)}
+      />
+      <ReciterPickerModal
+        visible={pickingReciter && selectedAyah != null}
+        selectedId={reciterId}
+        palette={palette}
+        onSelect={setReciter}
+        onClose={() => setPickingReciter(false)}
       />
     </>
   );

@@ -14,9 +14,11 @@ const MAX_SCALE = 4;
 type Props = {
   children: ReactNode;
   onZoomChange?: (isZoomed: boolean) => void;
+  /** Single tap, in this view's own (un-zoomed) coordinate space. */
+  onTap?: (x: number, y: number) => void;
 };
 
-export function ZoomableView({ children, onZoomChange }: Props): React.JSX.Element {
+export function ZoomableView({ children, onZoomChange, onTap }: Props): React.JSX.Element {
   const scale = useSharedValue(1);
   const savedScale = useSharedValue(1);
   const translateX = useSharedValue(0);
@@ -85,7 +87,15 @@ export function ZoomableView({ children, onZoomChange }: Props): React.JSX.Eleme
       }
     });
 
-  const composedGesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
+  const singleTapGesture = Gesture.Tap()
+    .maxDistance(12)
+    .onEnd((event, success) => {
+      if (success && onTap) runOnJS(onTap)(event.x, event.y);
+    });
+
+  // A single tap only fires if it isn't the first half of a double-tap (zoom).
+  const tapGestures = Gesture.Exclusive(doubleTapGesture, singleTapGesture);
+  const composedGesture = Gesture.Simultaneous(pinchGesture, panGesture, tapGestures);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [

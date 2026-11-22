@@ -120,6 +120,12 @@ export async function playQueue(items: QueueItem[], startIndex = 0): Promise<voi
   await playCurrent();
 }
 
+/** Restarts the current queue item (used when the reciter changes mid-playback). */
+export async function reloadCurrent(): Promise<void> {
+  if (state.queueIndex < 0) return;
+  await playCurrent();
+}
+
 export function pause(): void {
   player?.pause();
   emit({ isPlaying: false });

@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { getReciterById } from '../audio/reciters';
+import { ReciterPickerModal } from './ReciterPickerModal';
 import { getSurahs } from '../db/quranRepository';
 import type { Surah } from '../db/types';
 import { useQuranDb } from '../db/useQuranDb';
@@ -25,6 +27,9 @@ export function MiniPlayer(): React.JSX.Element | null {
   const stop = useAudioStore((s) => s.stop);
   const next = useAudioStore((s) => s.next);
   const previous = useAudioStore((s) => s.previous);
+  const reciterId = useAudioStore((s) => s.reciterId);
+  const setReciter = useAudioStore((s) => s.setReciter);
+  const [pickingReciter, setPickingReciter] = useState(false);
 
   useEffect(() => {
     getSurahs(db).then(setSurahs);
@@ -49,16 +54,23 @@ export function MiniPlayer(): React.JSX.Element | null {
         <Ionicons name="close" size={18} color={palette.textMuted} />
       </TouchableOpacity>
 
-      <View style={styles.info}>
+      <TouchableOpacity style={styles.info} onPress={() => setPickingReciter(true)} accessibilityLabel="تغيير القارئ">
         <Text style={[styles.title, { color: error ? palette.danger : palette.text }]} numberOfLines={1}>
           {error ?? surahName}
         </Text>
         {!error ? (
           <Text style={[styles.subtitle, { color: palette.textMuted }]} numberOfLines={1}>
-            الآية {item.ayahNumber}
+            الآية {item.ayahNumber} · {getReciterById(reciterId).nameAr}
           </Text>
         ) : null}
-      </View>
+      </TouchableOpacity>
+      <ReciterPickerModal
+        visible={pickingReciter}
+        selectedId={reciterId}
+        palette={palette}
+        onSelect={setReciter}
+        onClose={() => setPickingReciter(false)}
+      />
 
       <TouchableOpacity
         onPress={previous}

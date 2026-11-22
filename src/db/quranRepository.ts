@@ -142,3 +142,14 @@ export async function searchAyahs(db: SQLiteDatabase, query: string): Promise<Ay
     }
   }
 }
+
+/** The Nth ayah (0-based) of the whole Quran in reading order, e.g. 0 -> 1:1. */
+export async function getAyahByGlobalIndex(db: SQLiteDatabase, index: number): Promise<Ayah | null> {
+  try {
+    const row = await db.getFirstAsync<AyahRow>('SELECT * FROM ayahs ORDER BY id ASC LIMIT 1 OFFSET ?', index);
+    return row ? ayahFromRow(row) : null;
+  } catch (error) {
+    console.error('[quranRepository] getAyahByGlobalIndex failed:', error);
+    return null;
+  }
+}

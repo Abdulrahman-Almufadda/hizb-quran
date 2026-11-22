@@ -40,6 +40,8 @@ export const useAudioStore = create<AudioState>()(
         setReciter: (id) => {
           audioManager.setReciter(id);
           set({ reciterId: id });
+          // Switch the ayah that is playing right now, not just the following ones.
+          if (get().queue.length > 0) void audioManager.reloadCurrent();
         },
         playAyah: (surahId, ayahNumber) => audioManager.playQueue([{ surahId, ayahNumber }]),
         playQueue: (items, startIndex) => audioManager.playQueue(items, startIndex),
