@@ -5,6 +5,12 @@ import { mushafPageManifest } from '../assets/mushafManifest';
 
 const MAX_CACHED_PAGES = 6;
 const textCache = new Map<number, string>();
+let lastLoadError: string | null = null;
+
+/** Most recent load failure message, surfaced on-screen so release-build problems are diagnosable. */
+export function getLastMushafLoadError(): string | null {
+  return lastLoadError;
+}
 
 const MAX_ATTEMPTS = 3;
 const RETRY_DELAYS_MS = [500, 1500];
@@ -42,6 +48,15 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
 
 async function fetchPageText(moduleId: number): Promise<string> {
   const asset = Asset.fromModule(moduleId);
+  // On Android release builds the SVG lives in res/raw and its URI is a bare
+  // resource name (no scheme). Metro reports width/height for .svg files, so
+  // expo-asset mistakes it for an image and marks it "downloaded" with that
+  // bare name as localUri - which File can't open ("URI is not absolute").
+  // Reset that state so downloadAsync really copies it out to a file:// path.
+  if (asset.localUri != null && !asset.localUri.includes(':')) {
+    asset.localUri = null;
+    asset.downloaded = false;
+  }
   await asset.downloadAsync();
   const uri = asset.localUri ?? asset.uri;
   if (!uri) throw new Error('Asset resolved without a usable URI');
